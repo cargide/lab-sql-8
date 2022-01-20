@@ -67,13 +67,15 @@ JOIN sakila.actor A2 ON A2.actor_id = FA2.actor_id
 GROUP BY FA1.actor_id;
 
 -- 8) Get all pairs of customers that have rented the same film more than 3 times.
+-- This query fetches all without the more than 3 times condition
 SELECT CONCAT(C1.first_name, ' ', C1.last_name) AS customer1, CONCAT(C2.first_name, ' ', C2.last_name) AS customer2
 FROM sakila.rental R1
 JOIN sakila.customer C1 USING(customer_id) 
 JOIN sakila.rental R2 ON (R1.inventory_id = R2.inventory_id) AND (R1.customer_id <> R2.customer_id)
 JOIN sakila.customer C2 ON C2.customer_id = R2.customer_id
-GROUP BY R1.customer_id
-HAVING COUNT(R1.inventory_id) >= 3;
+GROUP BY R1.inventory_id
+-- HAVING COUNT(R1.inventory_id) >= 3
+order by customer1, customer2;
 
 
 -- 9) For each film, list actor that has acted in the most films.
