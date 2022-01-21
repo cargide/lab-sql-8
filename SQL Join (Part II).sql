@@ -50,11 +50,11 @@ WHERE I.store_id = 1 AND F.title = 'Academy Dinosaur'
 GROUP BY I.store_id;
 
 -- This query shows that every rented copy of the movie has been returned
-SELECT COUNT(I.inventory_id)
+SELECT COUNT(I.inventory_id), I.inventory_id
 FROM sakila.inventory I 
 JOIN sakila.film F USING(film_id)
-right JOIN sakila.rental R USING(inventory_id)
-WHERE I.store_id = 1 AND F.title = 'Academy Dinosaur' -- AND R.return_date IS not NULL
+left JOIN sakila.rental R USING(inventory_id)
+WHERE I.store_id = 1 AND F.title = 'Academy Dinosaur' AND R.return_date IS NULL
 GROUP BY I.inventory_id;
 
 
@@ -64,7 +64,8 @@ FROM sakila.film_actor FA1
 JOIN sakila.actor A1 USING(actor_id)
 JOIN sakila.film_actor FA2 ON (FA1.actor_id <> FA2.actor_id) AND (FA1.film_id = FA2.film_id)
 JOIN sakila.actor A2 ON A2.actor_id = FA2.actor_id
-GROUP BY FA1.actor_id;
+GROUP BY FA1.actor_id
+ORDER BY A1.first_name, A2.first_name ASC;
 
 -- 8) Get all pairs of customers that have rented the same film more than 3 times.
 -- This query fetches all without the more than 3 times condition
